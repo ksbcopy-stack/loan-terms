@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>여신 용어사전</title>
+<meta name="theme-color" content="#0f766e">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="여신용어">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon-180.png">
+<style>
+  :root {
+    --bg: #f6f7f8; --card: #ffffff; --text: #1b1f23; --sub: #5b6770; --line: #e3e7ea;
+    --accent: #0f766e; --accent-bg: #e0f2f0; --mark: #fff0a8; --ex-bg: #f1f8f7;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #101315; --card: #181d20; --text: #e8ecee; --sub: #9aa6ad; --line: #272e33;
+      --accent: #4fd1c5; --accent-bg: #1c2c2b; --mark: #5a4b00; --ex-bg: #162120;
+    }
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font: 16px/1.55 -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", sans-serif;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  header {
+    position: sticky; top: 0; z-index: 10; background: var(--bg);
+    padding: calc(10px + env(safe-area-inset-top)) 16px 8px; border-bottom: 1px solid var(--line);
+  }
+  .title { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
+  h1 { font-size: 19px; margin: 0; }
+  .count { font-size: 13px; color: var(--sub); }
+  .search { position: relative; }
+  .search input {
+    width: 100%; height: 44px; border-radius: 12px; border: 1px solid var(--line);
+    background: var(--card); color: var(--text); padding: 0 40px 0 14px; font-size: 16px; outline: none;
+  }
+  .search input:focus { border-color: var(--accent); }
+  .clear {
+    position: absolute; right: 4px; top: 4px; width: 36px; height: 36px; border: 0; border-radius: 50%;
+    background: transparent; color: var(--sub); font-size: 18px; display: none;
+  }
+  .chips { display: flex; gap: 8px; overflow-x: auto; padding: 10px 0 4px; scrollbar-width: none; }
+  .chips::-webkit-scrollbar { display: none; }
+  .chip {
+    flex: none; border: 1px solid var(--line); background: var(--card); color: var(--text);
+    border-radius: 999px; padding: 6px 13px; font-size: 14px;
+  }
+  .chip.on { background: var(--accent); border-color: var(--accent); color: #fff; }
+  main { padding: 12px 16px 40px; max-width: 760px; margin: 0 auto; }
+  .card {
+    background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+    margin-bottom: 10px; overflow: hidden;
+  }
+  .head { width: 100%; text-align: left; background: none; border: 0; color: inherit; font: inherit; padding: 14px 14px 12px; display: block; cursor: pointer; }
+  .row1 { display: flex; align-items: center; gap: 8px; }
+  .term { font-size: 18px; font-weight: 700; flex: 1; }
+  .cat { font-size: 12px; color: var(--accent); background: var(--accent-bg); padding: 2px 8px; border-radius: 999px; }
+  .alt { font-size: 13px; color: var(--sub); margin-top: 1px; }
+  .def { margin-top: 6px; color: var(--text); }
+  .hint { margin-top: 8px; font-size: 13px; color: var(--accent); }
+  .ex { display: none; padding: 0 14px 14px; }
+  .card.open .ex { display: block; }
+  .card.open .hint { display: none; }
+  .ex-box { background: var(--ex-bg); border-radius: 10px; padding: 10px 12px; }
+  .ex-label { font-size: 12px; font-weight: 700; color: var(--accent); margin-bottom: 4px; }
+  .ex-item { margin: 6px 0; padding-left: 14px; position: relative; }
+  .ex-item::before { content: "“"; position: absolute; left: 0; color: var(--accent); font-weight: 700; }
+  mark { background: var(--mark); color: inherit; border-radius: 3px; padding: 0 1px; }
+  .fav { border: 0; background: none; font-size: 22px; line-height: 1; padding: 4px; color: var(--sub); }
+  .fav.on { color: #f5a623; }
+  .tag-calc { background: var(--mark); color: var(--text); }
+  .calc { margin-top: 10px; background: var(--ex-bg); border-radius: 10px; padding: 10px 12px; }
+  .calc-f { font-weight: 600; margin: 4px 0; overflow-wrap: anywhere; }
+  .calc-gap { margin-top: 12px; }
+  .calc-given { color: var(--sub); font-size: 14px; margin: 2px 0 6px; }
+  .calc-steps { margin: 0; padding-left: 20px; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+  .calc-steps li { margin: 3px 0; }
+  .calc-ans { margin-top: 8px; padding: 8px 10px; border-radius: 8px; background: var(--accent-bg); font-weight: 600; overflow-wrap: anywhere; }
+  .empty { text-align: center; color: var(--sub); padding: 48px 0; }
+</style>
+</head>
+<body>
+<header>
+  <div class="title"><h1>여신 용어사전</h1><span class="count" id="count"></span></div>
+  <div class="search">
+    <input id="q" type="search" placeholder="용어 검색 (초성 검색 가능: ㄱㅅㄷㅂ)" autocomplete="off" autocapitalize="off" enterkeyhint="search">
+    <button class="clear" id="clear" aria-label="지우기">✕</button>
+  </div>
+  <div class="chips" id="chips"></div>
+</header>
+<main id="list"></main>
+
+<script src="terms.js"></script>
+<script src="calcs.js"></script>
+<script>
+(function () {
+  var CHO = "ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ";
+  var $ = function (id) { return document.getElementById(id); };
+  var state = { q: "", cat: "전체", favOnly: false };
+  var favs = {};
+  try { favs = JSON.parse(localStorage.getItem("favs") || "{}"); } catch (e) {}
+  function saveFavs() { try { localStorage.setItem("favs", JSON.stringify(favs)); } catch (e) {} }
+
+  function esc(s) { return s.replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+  function choseong(s) {
+    var out = "";
+    for (var i = 0; i < s.length; i++) {
+      var c = s.charCodeAt(i);
+      out += (c >= 0xAC00 && c <= 0xD7A3) ? CHO[Math.floor((c - 0xAC00) / 588)] : s[i];
+    }
+    return out;
+  }
+  function norm(s) { return s.toLowerCase().replace(/\s+/g, ""); }
+
+  TERMS.forEach(function (x, i) {
+    x.id = i;
+    x._keys = [x.t].concat(x.alt || []).map(norm);
+    x._cho = x._keys.map(choseong);
+    x._body = norm(x.d);
+    x.calc = (typeof CALCS !== "undefined" && CALCS[x.t]) || null;
+  });
+  TERMS.sort(function (a, b) { return a.t.localeCompare(b.t, "ko"); });
+
+  function score(x, q) {
+    var nq = norm(q), isCho = /^[ㄱ-ㅎ]+$/.test(nq), best = 0;
+    for (var i = 0; i < x._keys.length; i++) {
+      var k = x._keys[i];
+      if (isCho) { if (x._cho[i].indexOf(nq) === 0) best = Math.max(best, 80); else if (x._cho[i].indexOf(nq) > -1) best = Math.max(best, 40); continue; }
+      if (k === nq) best = Math.max(best, 100);
+      else if (k.indexOf(nq) === 0) best = Math.max(best, 90);
+      else if (k.indexOf(nq) > -1) best = Math.max(best, 70);
+    }
+    if (!best && !isCho && x._body.indexOf(nq) > -1) best = 20;
+    return best;
+  }
+
+  function hl(text, q) {
+    var t = esc(text);
+    if (!q) return t;
+    var words = q.trim().split(/\s+/).filter(Boolean).map(function (w) { return esc(w).replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); });
+    if (!words.length || /^[ㄱ-ㅎ]+$/.test(q)) return t;
+    return t.replace(new RegExp("(" + words.join("|") + ")", "gi"), "<mark>$1</mark>");
+  }
+  // 예문 안에서 용어(또는 별칭)를 강조
+  function hlTerm(text, x) {
+    var t = esc(text), names = [x.t].concat(x.alt || []).filter(function (n) { return n && n.length > 1; })
+      .sort(function (a, b) { return b.length - a.length; })
+      .map(function (n) { return esc(n).replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); });
+    if (!names.length) return t;
+    return t.replace(new RegExp("(" + names.join("|") + ")", "g"), "<mark>$1</mark>");
+  }
+
+  function calcHtml(x) {
+    var c = x.calc; if (!c) return "";
+    return '<div class="calc"><div class="ex-label">계산식</div>' +
+      c.f.map(function (l) { return '<div class="calc-f">' + esc(l) + "</div>"; }).join("") +
+      '<div class="ex-label calc-gap">계산 예제</div><div class="calc-given">' + esc(c.given) + "</div>" +
+      '<ol class="calc-steps">' + c.steps.map(function (s) { return "<li>" + esc(s) + "</li>"; }).join("") + "</ol>" +
+      '<div class="calc-ans">' + esc(c.ans) + "</div></div>";
+  }
+
+  function render() {
+    var q = state.q.trim(), items;
+    if (q) {
+      items = TERMS.map(function (x) { return [x, score(x, q)]; })
+        .filter(function (p) { return p[1] > 0; })
+        .sort(function (a, b) { return b[1] - a[1]; })
+        .map(function (p) { return p[0]; });
+    } else items = TERMS.slice();
+    if (state.cat !== "전체") items = items.filter(function (x) { return x.c === state.cat; });
+    if (state.favOnly) items = items.filter(function (x) { return favs[x.t]; });
+
+    $("count").textContent = items.length + "개 용어";
+    if (!items.length) { $("list").innerHTML = '<div class="empty">검색 결과가 없습니다.</div>'; return; }
+
+    $("list").innerHTML = items.map(function (x) {
+      var alt = x.alt && x.alt.length ? '<div class="alt">' + esc(x.alt.join(" · ")) + "</div>" : "";
+      var exs = (x.ex || []).map(function (e) { return '<div class="ex-item">' + hlTerm(e, x) + "</div>"; }).join("");
+      return '<article class="card" data-id="' + x.id + '">' +
+        '<button class="head" aria-expanded="false">' +
+          '<div class="row1"><span class="term">' + hl(x.t, q) + '</span><span class="cat">' + esc(x.c) + '</span>' + (x.calc ? '<span class="cat tag-calc">계산</span>' : "") +
+          '<span class="fav' + (favs[x.t] ? " on" : "") + '" role="button" aria-label="즐겨찾기" data-fav="1">' + (favs[x.t] ? "★" : "☆") + "</span></div>" +
+          alt + '<div class="def">' + hl(x.d, q) + "</div>" +
+          '<div class="hint">▾ 예문 보기</div>' +
+        "</button>" +
+        '<div class="ex"><div class="ex-box"><div class="ex-label">예문</div>' + exs + "</div>" + calcHtml(x) + "</div>" +
+      "</article>";
+    }).join("");
+  }
+
+  $("list").addEventListener("click", function (e) {
+    var card = e.target.closest(".card"); if (!card) return;
+    if (e.target.closest("[data-fav]")) {
+      var x = TERMS.filter(function (t) { return t.id == card.dataset.id; })[0];
+      if (favs[x.t]) delete favs[x.t]; else favs[x.t] = 1;
+      saveFavs();
+      var on = !!favs[x.t], f = card.querySelector(".fav");
+      f.textContent = on ? "★" : "☆"; f.classList.toggle("on", on);
+      if (state.favOnly) render();
+      return;
+    }
+    var open = card.classList.toggle("open");
+    card.querySelector(".head").setAttribute("aria-expanded", open);
+  });
+
+  var chips = ["전체", "★ 즐겨찾기"].concat(CATEGORIES);
+  $("chips").innerHTML = chips.map(function (c) { return '<button class="chip' + (c === "전체" ? " on" : "") + '" data-c="' + c + '">' + c + "</button>"; }).join("");
+  $("chips").addEventListener("click", function (e) {
+    var b = e.target.closest(".chip"); if (!b) return;
+    var c = b.dataset.c;
+    state.favOnly = c === "★ 즐겨찾기"; state.cat = state.favOnly ? "전체" : c;
+    Array.prototype.forEach.call($("chips").children, function (n) { n.classList.toggle("on", n === b); });
+    render(); window.scrollTo(0, 0);
+  });
+
+  $("q").addEventListener("input", function () {
+    state.q = this.value; $("clear").style.display = this.value ? "block" : "none"; render();
+  });
+  $("clear").addEventListener("click", function () { $("q").value = ""; state.q = ""; this.style.display = "none"; render(); $("q").focus(); });
+
+  render();
+  if ("serviceWorker" in navigator && location.protocol.indexOf("http") === 0) navigator.serviceWorker.register("sw.js").catch(function () {});
+})();
+</script>
+</body>
+</html>
