@@ -1,5 +1,5 @@
 // 오프라인 사용을 위한 캐시. 용어를 수정해 배포할 때는 VERSION 숫자를 올리세요.
-const VERSION = "v3";
+const VERSION = "v4";
 const FILES = ["./", "index.html", "terms.js", "calcs.js", "manifest.webmanifest", "icon.svg", "icon-180.png", "icon-192.png", "icon-512.png"];
 
 self.addEventListener("install", (e) => {
